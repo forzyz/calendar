@@ -1,0 +1,9 @@
+body {
+  overflow: hidden;
+}
+
+.fc {
+  /* the calendar root */
+  max-width: 1000px;
+  margin: 0 auto;
+}
