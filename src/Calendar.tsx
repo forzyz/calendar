@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { EventApi, DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -8,6 +8,9 @@ import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import { css } from "@emotion/react";
 import axios from "axios";
 import AddModal from "./components/AddModal";
+
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import 'bootstrap-icons/font/bootstrap-icons.css'; 
 
 interface CalendarAppState {
   weekendsVisible: boolean;
@@ -30,11 +33,19 @@ interface IHoliday {
 }
 
 const Calendar: React.FC = () => {
+  const modalShow = useRef(false);
+
   const [state, setState] = useState<CalendarAppState>({
     weekendsVisible: true,
     currentEvents: [],
     holidays: [],
   });
+
+  const [title, setTitle] = useState('');
+
+  const handleTitleChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setTitle(event.target.value);
+  }
 
   useEffect(() => {
     const fetchHolidays = async () => {
@@ -65,6 +76,7 @@ const Calendar: React.FC = () => {
   }, []);
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
+    modalShow.current = true;
     let title = prompt("Please enter a new title for your event");
     let calendarApi = selectInfo.view.calendar;
 
@@ -116,7 +128,7 @@ const Calendar: React.FC = () => {
       >
         
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrap5Plugin]}
           headerToolbar={{
             left: "prev,next today",
             center: "title",
@@ -134,9 +146,11 @@ const Calendar: React.FC = () => {
           eventClick={handleEventClick}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           events={state.holidays}
+          themeSystem="bootstrap5"
+       
         />
       </div>
-      
+      <AddModal handleTitleChange={handleTitleChange} title={title}  /> 
     </div>
   );
 };

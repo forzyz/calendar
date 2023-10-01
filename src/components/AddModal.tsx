@@ -1,6 +1,11 @@
 import React from "react";
 
-const AddModal: React.FC = () => {
+interface AddModalProps {
+  handleTitleChange: (event: { target: { value: string }; }) => void;
+  title: string;
+}
+
+const AddModal: React.FC<AddModalProps> = ({handleTitleChange, title}) =>  {
   return (
     <div
       className="modal fade"
@@ -23,7 +28,7 @@ const AddModal: React.FC = () => {
             <form name="save-event" method="post">
               <div className="form-group">
                 <label>Title</label>
-                <input type="text" name="title" className="form-control" />
+                <input value={title} onChange={handleTitleChange} type="text" name="title" className="form-control"  />
               </div>
               <div className="form-group">
                 <label>Event start</label>
