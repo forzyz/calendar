@@ -7,7 +7,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "./event-utils";
 import { css } from "@emotion/react";
 import axios from "axios";
-import AddModal from "./components/AddModal";
 
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import 'bootstrap-icons/font/bootstrap-icons.css'; 
@@ -150,7 +149,6 @@ const Calendar: React.FC = () => {
        
         />
       </div>
-      <AddModal handleTitleChange={handleTitleChange} title={title}  /> 
     </div>
   );
 };
